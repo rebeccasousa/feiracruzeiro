@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      
+<head th:replace="~{ base :: head }"></head>
+
+<body>
+
+	<header id="header" class="d-flex align-items-center">
+		<div class="container d-flex align-items-center">
+			<div class="logo me-auto">
+				<h1 style="font-family: 'Patrick Hand', cursive;"><a href="/feiracruzeiro">Feira Permanente Cruzeiro</a></h1>
+			</div>
+			<div th:replace="~{ base :: header }"></div>
+		</div>
+	</header>
+		
+	<section id="hero">
+	    <div class="hero-container">
+			<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+	        	<ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+	
+	        	<div class="carousel-inner" role="listbox">
+					<div class="carousel-item active" style="background-image: url('/img/slide/Slide-1.jpg');">
+				       <div class="carousel-container">
+				         <div class="carousel-content container">
+							<form action="buscalojas" id="form-busca">
+								<div class="input-group mb-3" style="width: 60%;"> 
+									<input type="text" class="form-control bg-transparent" name="param" placeholder="O que você procura?" aria-describedby="button-addon2">
+									<button class="btn btn-outline-secondary" style="border-color: white;" type="button" id="button-addon2" onclick="document.querySelector('#form-busca').submit()">Buscar</button>
+								</div>
+							</form>
+				         </div>
+				       </div>
+				    </div>
+		
+					<div class="carousel-item" style="background-image: url('/img/slide/slide-2.jpg');"></div>
+					<div class="carousel-item" style="background-image: url('/img/slide/slide-4.jpg');"></div>
+	        	</div>
+	
+				<a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+				</a>
+				<a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+					<span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<main id="main">
+		<section class="portfolio section-bg team">
+			<div class="container" data-aos="fade-up" data-aos-delay="100">
+			
+		        <div class="section-title">
+		          <h2>Algumas de nossas lojas</h2>
+		        </div>
+	
+		        <div class="row">
+		        	<div class="col-lg-12">
+		            	<ul id="portfolio-flters">
+		              		<li data-filter="*" class="filter-active">Todos</li>
+		              		<li data-filter=".filter-lojas">Lojas</li>
+		              		<li data-filter=".filter-restaurantes">Restaurantes</li>
+		              		<li data-filter=".filter-servicos">Serviços</li>
+		            	</ul>
+		          	</div>
+		        </div>
+	        
+	        	<div class="row portfolio-container">
+		          <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item filter-lojas" data-aos="fade-up" th:each="all : ${lojas}">
+		            <div class="member">
+		              <div class="pic"><img th:src="@{${all.fotosPath}}" class="img-fluid"/></div>
+		              <div class="member-info">
+		                <a th:href="${(#mvc.url('LC#getLojaDetalhe').arg(0, all.id)).build()}">
+		                	<h4 th:text="${all.nome}"></h4>
+		                </a>
+		                <span th:utext="${#strings.abbreviate(all.resumo, 30)}"></span>
+		              </div>
+		            </div>
+		          </div>
+	
+		          <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item filter-servicos" data-aos="fade-up" data-aos-delay="100" th:each="serv : ${servicos}">
+		            <div class="member">
+		              <div class="pic"><img th:src="@{${serv.fotosPath}}" class="img-fluid"/></div>
+		              <div class="member-info">
+		              	<a th:href="${(#mvc.url('LC#getLojaDetalhe').arg(0, serv.id)).build()}">
+		                	<h4 th:text="${serv.nome}"></h4>
+		                </a>
+		                <span th:text="${serv.resumo}"></span>
+		              </div>
+		            </div>
+		          </div>
+	
+		          <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item filter-restaurantes" data-aos="fade-up" data-aos-delay="200" th:each="rest : ${restaurantes}">
+		            <div class="member">
+		              <div class="pic"><img th:src="@{${rest.fotosPath}}" class="img-fluid"/></div>
+		              <div class="member-info">
+		              	<a th:href="${(#mvc.url('LC#getLojaDetalhe').arg(0, rest.id)).build()}">
+		                	<h4 th:text="${rest.nome}"></h4>
+		                </a>
+		                <span th:text="${rest.resumo}"></span>
+		              </div>
+		            </div>
+		          </div>
+				</div>
+			</div>
+	    </section>
+
+    	<section id="team" class="team">
+	      <div class="container portfolio" data-aos="fade-up">
+	
+	        <div class="section-title">
+	          <h2>Nossos eventos</h2>
+	        </div>
+	
+	        <div class="row portfolio-container">
+	          <div class="col-lg-4 col-md-6 portfolio-item" th:each="evento : ${eventos}">
+	            <div class="portfolio-wrap">
+	            	<img id="img" class="rounded" th:src="@{${evento.fotosPath}}" style="width: 99%;" >
+		            <div class="portfolio-info">
+		            <a th:href="${(#mvc.url('EC#getEventoDetalhe').arg(0, evento.id)).build()}">
+		                <h4 th:text="${evento.nome}"></h4>
+	                </a>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+    	</section>
+    
+    	<section id="contact" class="contact">
+			<div class="container" data-aos="fade-up">
+		        <div class="section-title">
+		          <h2>Nosso contato</h2>
+		        </div>
+	
+		        <div class="row">
+		          <div class="col-lg-6 d-flex" data-aos="fade-up">
+		            <div class="info-box">
+		              <i class="bi bi-geo-alt"></i>
+		              <h3>Nosso Endereço</h3>
+		              <p> Cruzeiro Novo Qd 811 - Cruzeiro Novo, Brasília - DF 70655-690</p>
+		            </div>
+		          </div>
+		
+		          <div class="col-lg-3 d-flex" data-aos="fade-up" data-aos-delay="100">
+		            <div class="info-box">
+		              <i class="bi bi-envelope"></i>
+		              <h3>Nosso Email</h3>
+		              <p>feira@admcruzeiro.com</p>
+		            </div>
+		          </div>
+		
+		          <div class="col-lg-3 d-flex" data-aos="fade-up" data-aos-delay="200">
+		            <div class="info-box ">
+		              <i class="bi bi-clock"></i>
+		              <h3>Nosso Horário de Atendimeto</h3>
+		              <p>8:00 as 18:00</p>
+		            </div>
+		          </div>
+		        </div>
+	      	</div>
+    	</section>
+
+	</main>
+  
+	<div th:replace="~{ base :: rodape }"></div>
+
+  	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+	<script src="/vendor/aos/aos.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="/vendor/purecounter/purecounter.js"></script>
+	<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+	<script src="/js/main.js"></script>
+	
+</body>
+</html>

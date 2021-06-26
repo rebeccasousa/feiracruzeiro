@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="~{ base :: head }"></head>
+
+<body>
+
+	<header id="header" class="d-flex align-items-center">
+		<div class="container d-flex align-items-center">
+			<div class="logo me-auto">
+	        	<h1 style="font-family: 'Patrick Hand', cursive;"><a href="/feiracruzeiro">Feira Permanente Cruzeiro</a></h1>
+	      	</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section class="breadcrumbs">
+			<div class="container">
+				<div class="d-flex justify-content-between align-items-center">
+					<h2>Acesso restrito</h2>
+					<ol>
+						<li><a href="/feiracruzeiro">Início</a></li>
+						<li><a onclick="document.querySelector('#form-logout').submit()" sec:authorize="isAuthenticated()" href="#">Logout</a></li>
+						<form th:action="@{/logout}" method="post" id="form-logout"> </form>
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="container">
+			<div class="col-6" style="margin-left: 31%;"><th:block th:include="feiraValidacao"></th:block></div>
+				<div class="row">
+					<div class="col-3">
+						<div class="list-group" id="list-tab" role="tablist">
+							<a class="list-group-item list-group-item-action disabled" id="list-home-list" data-bs-toggle="list" 
+								href="#list-home" role="tab" aria-controls="list-home">Gerenciar conta</a> 
+							<a class="list-group-item list-group-item-action active" id="list-profile-list" data-bs-toggle="list"
+								href="#list-profile" role="tab" aria-controls="list-profile">Alterar Loja</a> 
+							<a class="list-group-item list-group-item-action disabled"id="list-messages-list" data-bs-toggle="list"
+								href="#list-messages" role="tab" aria-controls="list-messages">Cadastrar Evento</a> 
+							<a class="list-group-item list-group-item-action disabled" id="list-settings-list" data-bs-toggle="list"
+								href="#list-settings" role="tab" aria-controls="list-settings">Cadastrar Pessoa</a>
+						</div>
+					</div>
+					
+					<div class="col-9">
+						<div class="tab-content" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+								<form class="row g-3" th:action="@{/atualizaloja}" th:object="${loja}" id="lojaform" enctype="multipart/form-data" method="post"> 
+									<div class="row">
+										<div class="col-md-8">
+											<input class="form-control" id="nome" name="contato.id" type="hidden" th:value="${loja.contato.id}">
+											<input class="form-control" id="arquivo" name="arquivo" type="hidden" th:value="${loja.arquivo}">
+											<input class="form-control" id="lojaid" name="id" type="hidden" th:value="${loja.id}">
+											<label for="validationDefault01" class="form-label">Nome</label>
+											<input type="text" class="form-control" id="nome" name="nome" required th:value="${loja.nome}">
+										</div>
+	
+										<div class="col-md-3">
+											<label class="form-label">Tipo</label> 
+											<select class="form-select" name="tipo">
+												<option selected th:value="${loja.tipo}" th:text="${loja.tipo}">-SELECIONE-</option>
+												<option value="LOJA">LOJA</option>
+												<option value="RESTAURANTE">RESTAURANTE</option>
+												<option value="SERVICO">SERVIÇO</option>
+											</select>
+										</div>
+	
+										<div class="col-md-8">
+											<label for="validationDefault01" class="form-label">Formas de pagamento</label> 
+											<input type="text" class="form-control" id="pagamento" required name="formaPagamento" th:value="${loja.formaPagamento}">
+										</div>
+	
+										<div class="col-md-3">
+											<label class="form-label" for="flexCheckIndeterminate">Possui Delivery?</label> </br>
+											<input class="form-check-input" type="checkbox" name="delivery" th:field="${loja.delivery}" th:checked="${loja.delivery}">
+										</div>
+										
+										<div class="col-md-8">
+											<label for="exampleFormControlInput1" class="form-label">Email</label>
+											<input type="email" class="form-control" name="contato.email" placeholder="name@example.com" th:value="${loja.contato.email}">
+										</div>
+										
+										<div class="col-md-3">
+											<label for="exampleFormControlInput1" class="form-label">Telefone</label>
+											<input type="text" name="contato.telefone" class="form-control" onkeyup="mascara_inteiro(this)" placeholder="000000000" maxlength="9" th:value="${loja.contato.telefone}">
+										</div>
+										
+										<div class="col-md-8">
+											<label for="exampleFormControlInput1" class="form-label">Complemento</label>
+											<input type="text" class="form-control" placeholder="" name="contato.complemento" th:value="${loja.contato.complemento}">
+										</div>
+										
+										<div class="col-md-3">
+											<label for="exampleFormControlInput1" class="form-label">Número</label>
+											<input type="text" class="form-control" name="contato.numero" th:value="${loja.contato.numero}">
+										</div>
+										
+										<div class="col-md-8">
+										    <label for="inputGroupFile01" class="form-label">Upload</label>
+											<div class="input-group mb-3">
+											  <input type="file" class="form-control" name="imagem" id="imgfile" accept="image/png, image/jpeg, image/jpg">
+											</div>
+											
+										</div>
+										
+										<div class="col-mb-5" th:if="${loja.fotosPath} != null">	
+										  	<img id="img" class="rounded" style="width: 150px;" name="arquivo" th:src="@{${loja.fotosPath}}">
+										</div>
+										
+										<div class="col-md-8" style="margin-top: 12px;">
+										  <label class="form-label">Especialidades da loja</label>
+										  <textarea class="form-control" rows="3" name="resumo" th:value="${loja.resumo}" th:text="${loja.resumo}"></textarea>
+										</div>
+	
+										<div class="col-md-12" style="margin-top: 12px;">
+											<button class="btn btn-primary" type="submit">Alterar</button>
+											<a th:href="${(#mvc.url('LC#getLojaForm')).build()}" class="btn btn-primary" >Cancelar</a>
+										</div>
+										
+									</div>
+								</form>
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+	<div th:replace="~{ base :: rodape }"></div>
+
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script src="/vendor/aos/aos.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="/vendor/php-email-form/validate.js"></script>
+	<script src="/vendor/purecounter/purecounter.js"></script>
+	<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+
+	<!-- Template Main JS File -->
+	<script src="/js/main.js"></script>
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$('#imgfile').change(function() {
+				showImage(this);
+			});	
+			
+			$('#eimgfile').change(function() {
+				showImageE(this);
+			});	
+			
+		})
+		
+		function showImage(fileInput) { 
+			file = fileInput.files[0];
+			reader = new FileReader();
+			
+			reader.onload = function(e) {
+				$('#img').attr('src', e.target.result);
+			}
+				
+			reader.readAsDataURL(file);
+		}
+		
+		function showImageE(fileInput) { 
+			file = fileInput.files[0];
+			reader = new FileReader();
+			
+			reader.onload = function(e) {
+				$('#eimg').attr('src', e.target.result);
+			}
+				
+			reader.readAsDataURL(file);
+		}
+		
+		function mascara_data(campo, valor){
+		  var mydata = '';
+		  mydata = mydata + valor;
+		  
+		  if (mydata.length == 2){
+		    mydata = mydata + '/';
+		    campo.value = mydata;
+		  }
+		  
+		  if (mydata.length == 5){
+		    mydata = mydata + '/';
+		    campo.value = mydata;
+		  }
+		}
+		
+		function mascara_inteiro(campo){
+			var texto = campo.value;
+			var charCode = event.keyCode;
+			if (charCode != '46' && charCode != '37' && charCode != '38' && 
+					charCode != '39' && charCode != '40' && charCode != '16') {
+				campo.value = texto.replace(/\D/g,"");       //Remove tudo o que não é dígito
+			}
+		    return campo;
+		}
+		
+		function change_icon(campo){
+			
+			if ( document.getElementById(campo).className.match(/(?:^|\s)bi bi-arrow-down(?!\S)/) )
+				document.getElementById(campo).className = "bi bi-arrow-up";
+			else
+				document.getElementById(campo).className = "bi bi-arrow-down";
+
+		} 
+		
+	</script>
+
+</body>
+
+</html>

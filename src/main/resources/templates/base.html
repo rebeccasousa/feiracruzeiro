@@ -1,0 +1,103 @@
+<head th:fragment="head">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Feira Permanente Cruzeiro</title>
+
+  <link href="/img/iconf.png" rel="icon">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<div th:fragment="header">
+	<nav id="navbar" class="navbar">
+		<ul>
+			<li><a class="nav-link scrollto" href="/feiracruzeiro">Início</a></li>
+			<li><a class="nav-link scrollto" th:href="${(#mvc.url('LC#getListagemLojas')).build()}" id="alojas">Lojas</a></li>
+			<li><a class="nav-link scrollto" th:href="${(#mvc.url('LC#getListagemServicos')).build()}" id="aservicos">Serviços</a></li>
+			<li><a class="nav-link scrollto" th:href="${(#mvc.url('LC#getListagemRestaurantes')).build()}" id="arestaurantes">Restaurantes</a></li>
+			<li><a class="nav-link scrollto" th:href="${(#mvc.url('EC#getListagemEventos')).build()}" id="aeventos">Eventos</a></li>
+			<li><a class="nav-link scrollto" th:href="${(#mvc.url('LC#getLojaForm')).build()}">Acesso restrito</a></li>
+		</ul>
+		<i class="bi bi-list mobile-nav-toggle"></i>
+	</nav>
+</div>
+
+<div th:fragment="rodape">
+	<footer id="footer">
+	    <div class="footer-top">
+	    	<div class="container">
+	        	<div class="row">
+		          <div class="col-lg-3 col-md-6 footer-info">
+		            <h3>Feira Permanente do Cruzeiro</h3>
+		            <p>
+		              A Feira do Cruzeiro surgiu no início da década de 60, em um terminal de ônibus, para suprir a necessidade das populações recém-chegadas em uma cidade que oferecia pouca infraestrutura e poucos serviços.
+		            </p>
+		          </div>
+	          
+		          <div class="col-lg-2 col-md-6 footer-links"></div>
+		
+		          <div class="col-lg-2 col-md-6 footer-links">
+		            <h4>Links</h4>
+		            <ul>
+		              <li><i class="bx bx-chevron-right"></i><a href="/feiracruzeiro"> Inicio</a></li>
+		              <li><i class="bx bx-chevron-right"></i><a href="/lojas"> Lojas</a></li>
+		              <li><i class="bx bx-chevron-right"></i><a href="/servicos"> Serviços</a></li>
+		              <li><i class="bx bx-chevron-right"></i><a href="/restaurantes"> Restaurantes</a></li>
+		              <li><i class="bx bx-chevron-right"></i><a href="/eventos"> Eventos</a></li>
+		            </ul>
+		          </div>
+		          
+		          <div class="col-lg-2 col-md-6 footer-links">
+		            <h4>Nossas variedades</h4>
+		            <ul>
+		              <li><i class="bx bx-chevron-right"></i> Queijos</li>
+		              <li><i class="bx bx-chevron-right"></i> Doces</li>
+		              <li><i class="bx bx-chevron-right"></i> Frutas</li>
+		              <li><i class="bx bx-chevron-right"></i> Verduras</li>
+		              <li><i class="bx bx-chevron-right"></i> Hortaliças</li>
+		            </ul>
+		          </div>
+		          
+		          <div class="col-lg-2 col-md-6 footer-links">
+		            <ul>
+		              <li><i class="bx bx-chevron-right"></i> Ervas</li>
+			          <li><i class="bx bx-chevron-right"></i> Grãos</li>
+			          <li><i class="bx bx-chevron-right"></i> Farinhas</li>
+			          <li><i class="bx bx-chevron-right"></i> Frios</li>
+			          <li><i class="bx bx-chevron-right"></i> Cereais</li>
+			     	  <li><i class="bx bx-chevron-right"></i> Carnes</li>
+		            </ul>
+		          </div>
+	        </div>
+	      </div>
+	    </div>
+
+	    <div class="container">
+	      <div class="copyright">
+	        &copy; Copyright Rebecca Vasconcelos Sousa
+	      </div>
+	    </div>
+	</footer>
+</div>
+ 
+<div class="container" th:fragment="breadcumb">
+	<div class="d-flex justify-content-between align-items-center">
+		<h2>Acesso restrito</h2>
+		<ol>
+			<li><a href="/feiracruzeiro">Início</a></li>
+			<li><a onclick="document.querySelector('#form-logout').submit()" sec:authorize="isAuthenticated()" href="#">Logout</a></li>
+			<form th:action="@{/logout}" method="post" id="form-logout"> </form>
+		</ol>
+	</div>
+</div>

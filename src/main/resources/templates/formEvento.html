@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="~{ base :: head }"></head>
+
+<body>
+
+	<header id="header" class="d-flex align-items-center">
+		<div class="container d-flex align-items-center">
+			<div class="logo me-auto">
+	        	<h1 style="font-family: 'Patrick Hand', cursive;"><a href="/feiracruzeiro">Feira Permanente Cruzeiro</a></h1>
+	      	</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section class="breadcrumbs">
+			<div class="container">
+				<div class="d-flex justify-content-between align-items-center">
+					<h2>Acesso restrito</h2>
+					<ol>
+						<li><a href="/feiracruzeiro">Início</a></li>
+						<li><a onclick="document.querySelector('#form-logout').submit()" sec:authorize="isAuthenticated()" href="#">Logout</a></li>
+						<form th:action="@{/logout}" method="post" id="form-logout"> </form>
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="container">
+			<div class="col-6" style="margin-left: 31%;"><th:block th:include="feiraValidacao"></th:block></div>
+				<div class="row">
+					<div class="col-3">
+						<div class="list-group" id="list-tab" role="tablist">
+							<a class="list-group-item list-group-item-action disabled" id="list-home-list" data-bs-toggle="list" 
+								href="#list-home" role="tab" aria-controls="list-home">Gerenciar conta</a> 
+							<a class="list-group-item list-group-item-action disabled" id="list-profile-list" data-bs-toggle="list"
+								href="#list-profile" role="tab" aria-controls="list-profile">Cadastrar Loja</a> 
+							<a class="list-group-item list-group-item-action active"id="list-messages-list" data-bs-toggle="list"
+								href="#list-messages" role="tab" aria-controls="list-messages">Alterar Evento</a> 
+							<a class="list-group-item list-group-item-action disabled" id="list-settings-list" data-bs-toggle="list"
+								href="#list-settings" role="tab" aria-controls="list-settings">Cadastrar Pessoa</a>
+						</div>
+					</div>
+					
+					<div class="col-9">
+						<div class="tab-content" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+								<form class="row g-3" th:action="@{/atualizaevento}" enctype="multipart/form-data" method="post">
+									<input class="form-control" id="nome" name="id" type="hidden" th:value="${evento.id}">
+									<input class="form-control" id="nome" name="user.username" type="hidden" th:value="${evento.user.username}">
+									<input class="form-control" name="evento.arquivo" type="hidden" th:value="${evento.arquivo}">
+									<div class="col-md-9">
+										<label for="validationDefault01" class="form-label">Nome</label>
+										<input type="text" class="form-control" id="validationDefault01" name="nome" required th:value="${evento.nome}">
+									</div>
+									
+									<div class="col-md-3"></div>
+
+									<div class="col-md-3">
+										<label for="validationDefault01" class="form-label">Data início</label>
+										<input type="text" class="form-control" placeholder="00/00/0000" maxlength="10" onkeyup="mascara_data(this, this.value)" id="validationDefault01" th:field="${evento.dataInicio}" name="dataInicio" th:value="${{evento.dataInicio}}" required>
+									</div>
+									
+									<div class="col-md-3">
+										<label for="validationDefault01" class="form-label">Data fim</label>
+										<input type="text" maxlength="10" placeholder="00/00/0000" class="form-control" onkeyup="mascara_data(this, this.value)" id="validationDefault02" th:field="${evento.dataFim}" name="dataFim" th:value="${{evento.dataFim}}">
+									</div>
+									
+									<div class="col-md-3">
+										<label for="lojaEvento" class="form-label">Loja</label>
+										<select class="form-select" aria-label="Default select example" name="contato.loja" id="lojaEvento">
+										  <option selected th:value="${evento.loja}">Loja</option>
+										  <option value="1" th:each="loja : ${lojas}" th:value="${loja.id}" th:text="${loja.nome}"></option>
+										</select>
+									</div>
+									
+									<div class="col-md-8">
+									    <label for="inputGroupFile01" class="form-label">Upload</label>
+										<div class="input-group mb-3">
+										  <input type="file" class="form-control" name="imagem" id="eimgfile" accept="image/png, image/jpeg, image/jpg">
+										</div>										
+									</div>
+									
+									<div class="col-md-8" th:if="${evento.fotosPath} != null">
+										<img id="eimg" class="rounded" style="width: 150px;" th:src="@{${evento.fotosPath}}">
+									</div>
+									
+									<div class="col-md-8">
+									  <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
+									  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="descricao" th:value="${evento.descricao}" th:text="${evento.descricao}"></textarea>
+									</div>
+
+									<div class="col-md-12" style="margin-top: 12px;">
+										<button class="btn btn-primary" type="submit">Alterar</button>
+										<a th:href="${(#mvc.url('LC#getLojaForm')).build()}" class="btn btn-primary" >Cancelar</a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div th:replace="~{ base :: rodape }"></div>
+
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script src="/vendor/aos/aos.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="/vendor/php-email-form/validate.js"></script>
+	<script src="/vendor/purecounter/purecounter.js"></script>
+	<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+
+	<!-- Template Main JS File -->
+	<script src="/js/main.js"></script>
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$('#imgfile').change(function() {
+				showImage(this);
+			});	
+			
+			$('#eimgfile').change(function() {
+				showImageE(this);
+			});	
+			
+		})
+		
+		function showImage(fileInput) { 
+			file = fileInput.files[0];
+			reader = new FileReader();
+			
+			reader.onload = function(e) {
+				$('#img').attr('src', e.target.result);
+			}
+				
+			reader.readAsDataURL(file);
+		}
+		
+		function showImageE(fileInput) { 
+			file = fileInput.files[0];
+			reader = new FileReader();
+			
+			reader.onload = function(e) {
+				$('#eimg').attr('src', e.target.result);
+			}
+				
+			reader.readAsDataURL(file);
+		}
+		
+		function mascara_data(campo, valor){
+		  var mydata = '';
+		  mydata = mydata + valor;
+		  
+		  if (mydata.length == 2){
+		    mydata = mydata + '/';
+		    campo.value = mydata;
+		  }
+		  
+		  if (mydata.length == 5){
+		    mydata = mydata + '/';
+		    campo.value = mydata;
+		  }
+		}
+		
+		function mascara_inteiro(campo){
+			var texto = campo.value;
+			var charCode = event.keyCode;
+			if (charCode != '46' && charCode != '37' && charCode != '38' && 
+					charCode != '39' && charCode != '40' && charCode != '16') {
+				campo.value = texto.replace(/\D/g,"");       //Remove tudo o que não é dígito
+			}
+		    return campo;
+		}
+		
+		function change_icon(campo){
+			
+			if ( document.getElementById(campo).className.match(/(?:^|\s)bi bi-arrow-down(?!\S)/) )
+				document.getElementById(campo).className = "bi bi-arrow-up";
+			else
+				document.getElementById(campo).className = "bi bi-arrow-down";
+
+		} 
+		
+	</script>
+
+</body>
+
+</html>

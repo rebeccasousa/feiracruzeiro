@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    
+<head th:replace="~{ base :: head }"></head>
+    
+    <body>
+		<header id="header" class="d-flex align-items-center">
+			<div class="container d-flex align-items-center">	
+				<div class="logo me-auto">
+			        <h1 style="font-family: 'Patrick Hand', cursive;"><a href="/feiracruzeiro">Feira Permanente Cruzeiro</a></h1>
+		      	</div>
+			</div>
+		</header>
+        
+        <section>
+            <div class="alert alert-danger" style="width: 50%; margin-left: 23%;" role="alert" th:if="${param.error}">
+		 		<span>Email ou senha estão inválidos</span>
+			</div>
+			
+			<div class="alert alert-success" role="alert" th:if="${param.logout}">
+			 	<span>Usuário deslogado</span>
+			</div>
+			
+	   	 	<div class="container" style="align-content: center; width: 33%; border: 2px; border-style: groove; border-radius: 5px; background-image: url('/img/forLogin.jpg');" >
+	        	<div><h2><b>Login</b></h2></div>
+				<div class="row g-1">
+			        <form th:action="@{/login}" method="post" class="row g-3">
+			       	
+			       		<div class="input-group mb-3">
+						  <input type="text" class="form-control bg-transparent" name="username" placeholder="Email" style="border-color: black;" required>
+						</div>
+			
+			            <div class="input-group mb-3">
+			            	<input type="password" class="form-control bg-transparent" name="password" id="senha"  placeholder="Senha" style="border-color: black;" required/> 
+			            </div> 
+			            
+			            <div style="margin-left: 40%;">
+							<button class="btn btn-outline-dark" type="submit">Entrar</button>
+						</div>
+						
+						<div class="col-12"></div>          
+			        </form>	
+		        </div>
+	        </div>
+
+       </section>
+       
+    </body>
+</html>

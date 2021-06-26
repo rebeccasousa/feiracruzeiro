@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+	<head th:replace="~{ base :: head }"></head>  
+	
+	<body>
+
+		<header id="header" class="d-flex align-items-center">
+			<div class="container d-flex align-items-center">
+				<div class="logo me-auto">
+					<h1 style="font-family: 'Patrick Hand', cursive;"><a href="/feiracruzeiro">Feira Permanente Cruzeiro</a></h1>
+				</div>
+				<div th:replace="~{ base :: header }"></div>
+			</div>
+		</header>
+		
+		<main id="main">
+			<section class="breadcrumbs">
+				<div class="container">
+					<div class="d-flex justify-content-between align-items-center">
+						<h2 th:text="${titulo}"></h2>
+						<ol>
+							<li><a href="/feiracruzeiro">Início</a></li>
+							<li th:text="${titulo}"></li>
+						</ol>
+					</div>
+				</div>
+			</section>
+		
+			<section class="portfolio section-bg team">
+      			<div class="container" data-aos="fade-up" data-aos-delay="100">
+      			<div class="col-6" style="margin-left: 31%;"><th:block th:include="feiraValidacao"></th:block></div>
+      				<div class="row portfolio-container">
+			          <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item filter-lojas" data-aos="fade-up" th:each="loja : ${lojas}">
+			            <div class="member">
+			              <div class="pic"><img th:src="@{${loja.fotosPath}}" class="img-fluid" alt=""></div>
+			              <div class="member-info">
+			                <a th:href="${(#mvc.url('LC#getLojaDetalhe').arg(0, loja.id)).build()}">
+			                	<h4 th:text="${loja.nome}"></h4>
+			                </a>
+			                <span th:utext="${#strings.abbreviate(loja.resumo, 30)}"></span>
+			              </div>
+			            </div>
+			          </div>
+		          	</div>
+      			</div>
+      		</section>
+      		
+		</main>
+		
+		<div th:replace="~{ base :: rodape }"></div>
+		
+		<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+		<script src="/vendor/aos/aos.js"></script>
+		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+		<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+		<script src="/vendor/purecounter/purecounter.js"></script>
+		<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+		<script src="/js/main.js"></script>
+
+  	</body>    
+</html>

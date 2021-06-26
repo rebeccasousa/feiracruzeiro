@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+      
+      <body>
+		
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${not #strings.isEmpty(message)}">
+		  <span th:text="${message}"></span>
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		
+		<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${not #strings.isEmpty(messageSuccess)}">
+		  <span th:text="${messageSuccess}"></span>
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		
+      </body>
+
+</html>
